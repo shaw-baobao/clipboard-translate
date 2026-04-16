@@ -26,7 +26,7 @@ while true; do
         LAST="$CURRENT"
         WORD=$(echo "$CURRENT" | xargs)
         # Skip non-ASCII text (e.g. Chinese)
-        if [[ -n "$WORD" && "$WORD" =~ ^[[:ascii:]]+$ ]]; then
+        if [[ -n "$WORD" ]] && echo "$WORD" | LC_ALL=C grep -qE '^[a-zA-Z0-9 _.,-]+$'; then
             RESULT=$("$TRANS" -b :zh "$WORD" 2>/dev/null)
             if [[ -n "$RESULT" ]]; then
                 "$POPUP" "$WORD" "$RESULT" &
