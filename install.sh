@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+main() {
+
 REPO="shaw-baobao/clipboard-translate"
 INSTALL_DIR="$HOME/.local/bin"
 
@@ -85,3 +87,6 @@ echo "Commands:"
 echo "  Stop:      launchctl unload ~/Library/LaunchAgents/com.clipboard-translate.plist"
 echo "  Start:     launchctl load ~/Library/LaunchAgents/com.clipboard-translate.plist"
 echo "  Uninstall: curl -sL https://raw.githubusercontent.com/$REPO/main/uninstall.sh | bash"
+
+}
+main
