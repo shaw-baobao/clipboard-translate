@@ -18,7 +18,7 @@ Works in any macOS app — including GPU-rendered terminals like Warp.
 ## Quick Install
 
 ```bash
-curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh -o /tmp/ct-install.sh && bash /tmp/ct-install.sh
 ```
 
 This will download the pre-built binary, install dependencies, and set up auto-start on login.

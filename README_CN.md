@@ -18,7 +18,7 @@
 ## 一键安装
 
 ```bash
-curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh -o /tmp/ct-install.sh && bash /tmp/ct-install.sh
 ```
 
 自动下载预编译二进制文件、安装依赖、设置开机自启。
