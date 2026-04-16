@@ -33,6 +33,14 @@ make install
 make start
 ```
 
+## Update
+
+Re-run the install command to update to the latest version:
+
+```bash
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh -o /tmp/ct-install.sh && bash /tmp/ct-install.sh
+```
+
 ## Uninstall
 
 ```bash

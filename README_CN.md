@@ -33,6 +33,14 @@ make install
 make start
 ```
 
+## 更新
+
+重新运行安装命令即可更新到最新版本：
+
+```bash
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh -o /tmp/ct-install.sh && bash /tmp/ct-install.sh
+```
+
 ## 卸载
 
 ```bash
