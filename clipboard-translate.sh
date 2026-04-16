@@ -28,12 +28,14 @@ LAST=""
 while true; do
     CURRENT=$(pbpaste 2>/dev/null)
 
-    if [[ "$CURRENT" != "$LAST" && -n "$CURRENT" && ${#CURRENT} -le 100 && "$CURRENT" != *$'\n'* ]]; then
+    if [[ "$CURRENT" != "$LAST" && -n "$CURRENT" && ${#CURRENT} -le 500 && "$CURRENT" != *$'\n'* ]]; then
         LAST="$CURRENT"
         WORD="${CURRENT#"${CURRENT%%[![:space:]]*}"}"
         WORD="${WORD%"${WORD##*[![:space:]]}"}"
-        # Skip non-ASCII text, URLs, file paths
-        if [[ -n "$WORD" && "$WORD" != http* && "$WORD" != /* ]] && printf '%s' "$WORD" | LC_ALL=C /usr/bin/grep -qE "^[a-zA-Z0-9 _.,'\":;!?()+-]+$"; then
+        # Skip URLs, file paths, and CJK text; must contain English letters
+        if [[ -n "$WORD" && "$WORD" != http* && "$WORD" != /* ]] \
+            && printf '%s' "$WORD" | /usr/bin/grep -q '[a-zA-Z]' \
+            && /usr/bin/perl -e 'use Encode; my $s = decode("UTF-8", $ARGV[0]); exit 1 if $s =~ /[\x{4e00}-\x{9fff}\x{3400}-\x{4dbf}\x{3040}-\x{30ff}\x{ac00}-\x{d7af}]/; exit 0;' "$WORD" 2>/dev/null; then
             LOWER=$(printf '%s' "$WORD" | tr '[:upper:]' '[:lower:]')
             CACHE_FILE="$CACHE_DIR/$LOWER"
             # Check cache first
