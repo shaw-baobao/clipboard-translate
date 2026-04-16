@@ -72,8 +72,10 @@ let y = mouseLoc.y + 12
 panel.setFrameOrigin(NSPoint(x: x, y: y))
 panel.orderFrontRegardless()
 
-// Auto close after 3 seconds
-DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+// Auto close: ~1s per 10 chars, min 3s, max 10s
+let charCount = Double(displayText.count)
+let duration = min(max(charCount / 10.0, 3.0), 10.0)
+DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
     NSApp.terminate(nil)
 }
 
