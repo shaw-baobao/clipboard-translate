@@ -25,7 +25,8 @@ while true; do
     if [[ "$CURRENT" != "$LAST" && -n "$CURRENT" && ${#CURRENT} -le 100 && "$CURRENT" != *$'\n'* ]]; then
         LAST="$CURRENT"
         WORD=$(echo "$CURRENT" | xargs)
-        if [[ -n "$WORD" ]]; then
+        # Skip non-ASCII text (e.g. Chinese)
+        if [[ -n "$WORD" && "$WORD" =~ ^[[:ascii:]]+$ ]]; then
             RESULT=$("$TRANS" -b :zh "$WORD" 2>/dev/null)
             if [[ -n "$RESULT" ]]; then
                 "$POPUP" "$WORD" "$RESULT" &
