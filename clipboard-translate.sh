@@ -19,6 +19,10 @@ if [[ -z "$TRANS" || ! -x "$TRANS" ]]; then
     exit 1
 fi
 
+# Cache for translated words
+CACHE_DIR="$HOME/.cache/clipboard-translate"
+mkdir -p "$CACHE_DIR"
+
 LAST=""
 
 while true; do
@@ -30,7 +34,18 @@ while true; do
         WORD="${WORD%"${WORD##*[![:space:]]}"}"
         # Skip non-ASCII text (e.g. Chinese)
         if [[ -n "$WORD" ]] && printf '%s' "$WORD" | LC_ALL=C /usr/bin/grep -qE '^[a-zA-Z0-9 _.,-]+$'; then
-            RESULT=$("$TRANS" -b :zh "$WORD" 2>/dev/null)
+            LOWER=$(printf '%s' "$WORD" | tr '[:upper:]' '[:lower:]')
+            CACHE_FILE="$CACHE_DIR/$LOWER"
+            # Check cache first
+            if [[ -f "$CACHE_FILE" ]]; then
+                RESULT=$(cat "$CACHE_FILE")
+            else
+                RESULT=$("$TRANS" -b :zh "$WORD" 2>/dev/null)
+                # Save to cache
+                if [[ -n "$RESULT" ]]; then
+                    printf '%s' "$RESULT" > "$CACHE_FILE"
+                fi
+            fi
             if [[ -n "$RESULT" ]]; then
                 "$POPUP" "$WORD" "$RESULT" &
             fi
