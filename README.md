@@ -8,6 +8,8 @@ Works in any macOS app — including GPU-rendered terminals like Warp.
 
 ## Demo
 
+![demo](assets/demo.png)
+
 1. Double-click a word to select it
 2. Press `⌘C`
 3. A dark popup appears near your cursor with the translation
