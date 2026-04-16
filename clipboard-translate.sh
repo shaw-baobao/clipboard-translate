@@ -12,12 +12,12 @@ if [[ ! -x "$POPUP" ]]; then
     POPUP="$HOME/.local/bin/translate-popup"
 fi
 
-# Find translate-shell
-TRANS=$(command -v trans 2>/dev/null)
-if [[ -z "$TRANS" || ! -x "$TRANS" ]]; then
-    echo "Error: translate-shell not found. Install with: brew install translate-shell" >&2
-    exit 1
-fi
+# Translate function: use Google Translate API directly via curl (faster than translate-shell)
+translate() {
+    local encoded=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$1'))" 2>/dev/null || printf '%s' "$1" | sed 's/ /+/g')
+    local json=$(curl -s --max-time 5 "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh&dt=t&q=$encoded" -H "User-Agent: Mozilla/5.0")
+    printf '%s' "$json" | python3 -c "import sys,json; d=json.loads(sys.stdin.read()); print(''.join(s[0] for s in d[0]))" 2>/dev/null
+}
 
 # Cache for translated words
 CACHE_DIR="$HOME/.cache/clipboard-translate"
@@ -42,7 +42,7 @@ while true; do
             if [[ -f "$CACHE_FILE" ]]; then
                 RESULT=$(cat "$CACHE_FILE")
             else
-                RESULT=$("$TRANS" -b :zh "$WORD" 2>/dev/null)
+                RESULT=$(translate "$WORD")
                 # Save to cache
                 if [[ -n "$RESULT" ]]; then
                     printf '%s' "$RESULT" > "$CACHE_FILE"
@@ -54,5 +54,5 @@ while true; do
         fi
     fi
 
-    sleep 0.5
+    sleep 0.2
 done
