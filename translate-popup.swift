@@ -12,9 +12,32 @@ app.setActivationPolicy(.accessory)
 // Get mouse location
 let mouseLoc = NSEvent.mouseLocation
 
+// Calculate size based on content
+let displayText = "\(word)\n\(translation)"
+let font = NSFont(name: "PingFang SC", size: 16) ?? NSFont.systemFont(ofSize: 16)
+let maxWidth: CGFloat = 400
+let padding: CGFloat = 24
+
+let textAttr: [NSAttributedString.Key: Any] = [
+    .font: font,
+    .paragraphStyle: {
+        let p = NSMutableParagraphStyle()
+        p.alignment = .center
+        return p
+    }()
+]
+let textSize = (displayText as NSString).boundingRect(
+    with: NSSize(width: maxWidth - padding * 2, height: 800),
+    options: [.usesLineFragmentOrigin, .usesFontLeading],
+    attributes: textAttr
+)
+
+let w = min(max(textSize.width + padding * 2, 120), maxWidth)
+let h = textSize.height + padding
+
 // Create panel (floating, no focus steal)
 let panel = NSPanel(
-    contentRect: NSRect(x: 0, y: 0, width: 240, height: 64),
+    contentRect: NSRect(x: 0, y: 0, width: w, height: h),
     styleMask: [.borderless, .nonactivatingPanel],
     backing: .buffered,
     defer: true
@@ -31,20 +54,20 @@ bgView.layer?.backgroundColor = NSColor(red: 0.12, green: 0.12, blue: 0.14, alph
 bgView.layer?.cornerRadius = 10
 
 // Label
-let label = NSTextField(wrappingLabelWithString: "\(word)\n\(translation)")
-label.font = NSFont(name: "PingFang SC", size: 16)
+let label = NSTextField(wrappingLabelWithString: displayText)
+label.font = font
 label.textColor = NSColor.white
 label.alignment = .center
 label.backgroundColor = NSColor.clear
 label.isBezeled = false
 label.isEditable = false
-label.frame = NSRect(x: 8, y: 4, width: 224, height: 56)
+label.frame = NSRect(x: padding / 2, y: padding / 4, width: w - padding, height: h - padding / 2)
 
 bgView.addSubview(label)
 panel.contentView?.addSubview(bgView)
 
 // Position near mouse
-let x = mouseLoc.x - 120
+let x = mouseLoc.x - w / 2
 let y = mouseLoc.y + 12
 panel.setFrameOrigin(NSPoint(x: x, y: y))
 panel.orderFrontRegardless()
