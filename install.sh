@@ -4,13 +4,7 @@ set -e
 REPO="shaw-baobao/clipboard-translate"
 INSTALL_DIR="$HOME/.local/bin"
 
-# Detect architecture
-ARCH=$(uname -m)
-case "$ARCH" in
-    arm64)  ASSET="clipboard-translate-arm64.tar.gz" ;;
-    x86_64) ASSET="clipboard-translate-x86_64.tar.gz" ;;
-    *)      echo "Unsupported architecture: $ARCH"; exit 1 ;;
-esac
+ASSET="clipboard-translate-macos-universal.tar.gz"
 
 echo "Installing clipboard-translate..."
 

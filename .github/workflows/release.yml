@@ -9,44 +9,25 @@ permissions:
   contents: write
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        include:
-          - arch: arm64
-            runner: macos-14
-          - arch: x86_64
-            runner: macos-13
-    runs-on: ${{ matrix.runner }}
+  build-and-release:
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build
+      - name: Build universal binary
         run: |
-          swiftc translate-popup.swift -o translate-popup -O
-          tar czf clipboard-translate-${{ matrix.arch }}.tar.gz \
+          swiftc translate-popup.swift -o translate-popup-arm64 -O -target arm64-apple-macosx13.0
+          swiftc translate-popup.swift -o translate-popup-x86_64 -O -target x86_64-apple-macosx13.0
+          lipo -create translate-popup-arm64 translate-popup-x86_64 -output translate-popup
+          file translate-popup
+          tar czf clipboard-translate-macos-universal.tar.gz \
             translate-popup \
             clipboard-translate.sh \
             com.clipboard-translate.plist \
             install.sh
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: clipboard-translate-${{ matrix.arch }}
-          path: clipboard-translate-${{ matrix.arch }}.tar.gz
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          merge-multiple: true
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: |
-            clipboard-translate-arm64.tar.gz
-            clipboard-translate-x86_64.tar.gz
+          files: clipboard-translate-macos-universal.tar.gz
