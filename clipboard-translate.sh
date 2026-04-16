@@ -2,6 +2,8 @@
 # clipboard-translate: monitors clipboard, shows Chinese translation popup
 # Usage: run in background, then just ⌘C any word to see translation
 
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 POPUP="$SCRIPT_DIR/translate-popup"
 
@@ -11,8 +13,8 @@ if [[ ! -x "$POPUP" ]]; then
 fi
 
 # Find translate-shell
-TRANS=$(command -v trans 2>/dev/null || echo "/opt/homebrew/bin/trans")
-if [[ ! -x "$TRANS" ]]; then
+TRANS=$(command -v trans 2>/dev/null)
+if [[ -z "$TRANS" || ! -x "$TRANS" ]]; then
     echo "Error: translate-shell not found. Install with: brew install translate-shell" >&2
     exit 1
 fi
@@ -24,9 +26,10 @@ while true; do
 
     if [[ "$CURRENT" != "$LAST" && -n "$CURRENT" && ${#CURRENT} -le 100 && "$CURRENT" != *$'\n'* ]]; then
         LAST="$CURRENT"
-        WORD=$(echo "$CURRENT" | xargs)
+        WORD="${CURRENT#"${CURRENT%%[![:space:]]*}"}"
+        WORD="${WORD%"${WORD##*[![:space:]]}"}"
         # Skip non-ASCII text (e.g. Chinese)
-        if [[ -n "$WORD" ]] && echo "$WORD" | LC_ALL=C grep -qE '^[a-zA-Z0-9 _.,-]+$'; then
+        if [[ -n "$WORD" ]] && printf '%s' "$WORD" | LC_ALL=C /usr/bin/grep -qE '^[a-zA-Z0-9 _.,-]+$'; then
             RESULT=$("$TRANS" -b :zh "$WORD" 2>/dev/null)
             if [[ -n "$RESULT" ]]; then
                 "$POPUP" "$WORD" "$RESULT" &
