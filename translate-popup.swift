@@ -74,7 +74,7 @@ panel.orderFrontRegardless()
 
 // Auto close: ~1s per 10 chars, min 3s, max 10s
 let charCount = Double(displayText.count)
-let duration = min(max(charCount / 10.0, 3.0), 10.0)
+let duration = min(max(charCount / 20.0, 2.0), 6.0)
 DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
     NSApp.terminate(nil)
 }
