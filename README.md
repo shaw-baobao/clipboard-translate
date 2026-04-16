@@ -1,29 +1,29 @@
 # clipboard-translate
 
-[English](README.md) | [中文](README_CN.md)
+[English](README_EN.md) | [中文](README.md)
 
-Select a word, press `⌘ Command + C`, see the Chinese translation in a floating popup. No buttons, no focus stealing, auto-dismisses in 3 seconds.
+选中一个单词，按 `⌘ Command + C`，鼠标旁边会弹出一个浮动窗口显示中文翻译。无按钮、不抢焦点、3 秒后自动消失。
 
-Works in any macOS app — including GPU-rendered terminals like Warp.
+适用于所有 macOS 应用，包括 Warp 等 GPU 渲染的终端。
 
-## Demo
+## 演示
 
 ![demo](assets/demo.png)
 
-1. Double-click a word to select it
-2. Press `⌘ Command + C`
-3. A dark popup appears near your cursor with the translation
-4. It disappears after 3 seconds
+1. 双击选中一个单词
+2. 按 `⌘ Command + C`
+3. 鼠标旁边出现一个深色弹窗，显示翻译结果
+4. 3 秒后自动消失
 
-## Quick Install
+## 一键安装
 
 ```bash
 curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh -o /tmp/ct-install.sh && bash /tmp/ct-install.sh
 ```
 
-This will download the pre-built binary, install dependencies, and set up auto-start on login.
+自动下载预编译二进制文件、安装依赖、设置开机自启。
 
-## Manual Install
+## 手动安装
 
 ```bash
 brew install translate-shell
@@ -33,28 +33,28 @@ make install
 make start
 ```
 
-## Update
+## 更新
 
-Re-run the install command to update to the latest version:
+重新运行安装命令即可更新到最新版本：
 
 ```bash
 curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh -o /tmp/ct-install.sh && bash /tmp/ct-install.sh
 ```
 
-## Uninstall
+## 卸载
 
 ```bash
 curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/uninstall.sh | bash
 ```
 
-## How it works
+## 工作原理
 
-Two components:
+两个组件：
 
-1. **clipboard-translate.sh** — A bash loop that polls the clipboard every 0.5s. When it detects new short text (from `⌘ Command + C`), it calls `translate-shell` to get the Chinese translation.
+1. **clipboard-translate.sh** — 一个 bash 循环，每 0.5 秒检查剪贴板。当检测到新的短文本（来自 `⌘ Command + C`），调用 `translate-shell` 获取中文翻译。
 
-2. **translate-popup** (Swift) — A native macOS `NSPanel` with `nonactivatingPanel` style that floats above all windows without stealing focus. Shows the word + translation, auto-closes after 3 seconds.
+2. **translate-popup**（Swift）— 一个原生 macOS `NSPanel`，使用 `nonactivatingPanel` 样式，悬浮在所有窗口之上且不抢焦点。显示单词 + 翻译，3 秒后自动关闭。
 
-## License
+## 许可证
 
 Apache 2.0
