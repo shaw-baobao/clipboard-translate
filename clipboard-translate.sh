@@ -32,8 +32,8 @@ while true; do
         LAST="$CURRENT"
         WORD="${CURRENT#"${CURRENT%%[![:space:]]*}"}"
         WORD="${WORD%"${WORD##*[![:space:]]}"}"
-        # Skip non-ASCII text (e.g. Chinese)
-        if [[ -n "$WORD" ]] && printf '%s' "$WORD" | LC_ALL=C /usr/bin/grep -qE "^[a-zA-Z0-9 _.,'\":;!?/()+-]+$"; then
+        # Skip non-ASCII text, URLs, file paths
+        if [[ -n "$WORD" && "$WORD" != http* && "$WORD" != /* ]] && printf '%s' "$WORD" | LC_ALL=C /usr/bin/grep -qE "^[a-zA-Z0-9 _.,'\":;!?()+-]+$"; then
             LOWER=$(printf '%s' "$WORD" | tr '[:upper:]' '[:lower:]')
             CACHE_FILE="$CACHE_DIR/$LOWER"
             # Check cache first
