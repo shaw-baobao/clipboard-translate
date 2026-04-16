@@ -2,7 +2,7 @@
 
 [English](README.md) | [中文](README_CN.md)
 
-Select a word, press `⌘C`, see the Chinese translation in a floating popup. No buttons, no focus stealing, auto-dismisses in 3 seconds.
+Select a word, press `⌘ Command + C`, see the Chinese translation in a floating popup. No buttons, no focus stealing, auto-dismisses in 3 seconds.
 
 Works in any macOS app — including GPU-rendered terminals like Warp.
 
@@ -11,7 +11,7 @@ Works in any macOS app — including GPU-rendered terminals like Warp.
 ![demo](assets/demo.png)
 
 1. Double-click a word to select it
-2. Press `⌘C`
+2. Press `⌘ Command + C`
 3. A dark popup appears near your cursor with the translation
 4. It disappears after 3 seconds
 
@@ -43,7 +43,7 @@ curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/
 
 Two components:
 
-1. **clipboard-translate.sh** — A bash loop that polls the clipboard every 0.5s. When it detects new short text (from `⌘C`), it calls `translate-shell` to get the Chinese translation.
+1. **clipboard-translate.sh** — A bash loop that polls the clipboard every 0.5s. When it detects new short text (from `⌘ Command + C`), it calls `translate-shell` to get the Chinese translation.
 
 2. **translate-popup** (Swift) — A native macOS `NSPanel` with `nonactivatingPanel` style that floats above all windows without stealing focus. Shows the word + translation, auto-closes after 3 seconds.
 
