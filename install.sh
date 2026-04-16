@@ -53,25 +53,24 @@ PLIST_DIR="$HOME/Library/LaunchAgents"
 PLIST="$PLIST_DIR/com.clipboard-translate.plist"
 mkdir -p "$PLIST_DIR"
 
-cat > "$PLIST" << EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>com.clipboard-translate</string>
-    <key>ProgramArguments</key>
-    <array>
-        <string>/bin/bash</string>
-        <string>${INSTALL_DIR}/clipboard-translate.sh</string>
-    </array>
-    <key>RunAtLoad</key>
-    <true/>
-    <key>KeepAlive</key>
-    <true/>
-</dict>
-</plist>
-EOF
+printf '%s\n' \
+    '<?xml version="1.0" encoding="UTF-8"?>' \
+    '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' \
+    '<plist version="1.0">' \
+    '<dict>' \
+    '    <key>Label</key>' \
+    '    <string>com.clipboard-translate</string>' \
+    '    <key>ProgramArguments</key>' \
+    '    <array>' \
+    '        <string>/bin/bash</string>' \
+    "        <string>${INSTALL_DIR}/clipboard-translate.sh</string>" \
+    '    </array>' \
+    '    <key>RunAtLoad</key>' \
+    '    <true/>' \
+    '    <key>KeepAlive</key>' \
+    '    <true/>' \
+    '</dict>' \
+    '</plist>' > "$PLIST"
 
 # Start the service
 launchctl unload "$PLIST" 2>/dev/null || true
