@@ -58,4 +58,4 @@ Two components:
 
 ## License
 
-MIT
+Apache 2.0
