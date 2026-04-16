@@ -13,41 +13,28 @@
 3. 鼠标旁边出现一个深色弹窗，显示翻译结果
 4. 3 秒后自动消失
 
-## 依赖
+## 一键安装
 
-- macOS
-- [translate-shell](https://github.com/soimort/translate-shell)
+```bash
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh | bash
+```
 
-## 安装
+自动下载预编译二进制文件、安装依赖、设置开机自启。
+
+## 手动安装
 
 ```bash
 brew install translate-shell
 git clone https://github.com/shaw-baobao/clipboard-translate.git
 cd clipboard-translate
 make install
-```
-
-## 使用
-
-```bash
-# 启动剪贴板监听
 make start
-
-# 停止
-make stop
-```
-
-## 开机自启
-
-```bash
-cp com.clipboard-translate.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.clipboard-translate.plist
 ```
 
 ## 卸载
 
 ```bash
-make uninstall
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/uninstall.sh | bash
 ```
 
 ## 工作原理

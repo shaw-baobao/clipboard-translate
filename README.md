@@ -13,41 +13,28 @@ Works in any macOS app — including GPU-rendered terminals like Warp.
 3. A dark popup appears near your cursor with the translation
 4. It disappears after 3 seconds
 
-## Requirements
+## Quick Install
 
-- macOS
-- [translate-shell](https://github.com/soimort/translate-shell)
+```bash
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/install.sh | bash
+```
 
-## Install
+This will download the pre-built binary, install dependencies, and set up auto-start on login.
+
+## Manual Install
 
 ```bash
 brew install translate-shell
 git clone https://github.com/shaw-baobao/clipboard-translate.git
 cd clipboard-translate
 make install
-```
-
-## Usage
-
-```bash
-# Start the clipboard watcher
 make start
-
-# Stop it
-make stop
-```
-
-## Auto-start on login
-
-```bash
-cp com.clipboard-translate.plist ~/Library/LaunchAgents/
-launchctl load ~/Library/LaunchAgents/com.clipboard-translate.plist
 ```
 
 ## Uninstall
 
 ```bash
-make uninstall
+curl -sL https://raw.githubusercontent.com/shaw-baobao/clipboard-translate/main/uninstall.sh | bash
 ```
 
 ## How it works
